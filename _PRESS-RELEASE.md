@@ -18,27 +18,37 @@ Once the project moves into development, the press release can be used as a touc
  
 ## Heading ##
   > Name the product in a way the reader (i.e. your target customers) will understand.
+  The product will take a Spotify playlist and create a Youtube video playlist. It will make a Youtube search returning the most popular video and play it. 
+
 
 ## Sub-Heading ##
   > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  Target consumers will be anyone who likes having a music video play in the background. 
 
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  Music videos are often overlooked, but they are as also amazing pieces of art. They encompass a visual representation and sometimes will offer a new interpretation of the music. We are trying to use this application to allow people to easily access available music videos based off curated playlists on Spotify. 
 
 ## Problem ##
   > Describe the problem your product solves.
+  People overlook the artistic value instrinsic to music videos and productions.
 
 ## Solution ##
   > Describe how your product elegantly solves the problem.
+  Our applicatino provides an easy and quick way to access music videos.
 
 ## Quote from You ##
   > A quote from a spokesperson in your company.
+  "I see colors, when I hear your voice, grab your wings we're putting gravity on trial."
 
 ## How to Get Started ##
   > Describe how easy it is to get started.
+  Enter a Spotify Playlist URL/URI, enjoy.
 
 ## Customer Quote ##
   > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  "It's great to have music videos playing instead of just music while we are cooking! Except always hitting the Comcast limit, this app is great!"
 
 ## Closing and Call to Action ##
   > Wrap it up and give pointers where the reader should go next.
+  "I AM L'RRRRR RULER OF THE PLANET OMICRON PERSEI 8, USE SPOTIFYTUBE"

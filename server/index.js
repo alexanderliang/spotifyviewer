@@ -31,29 +31,69 @@ app.get('/', function(req, res){
 
 app.get('/playlist', function(req, res){
   var stringBody = ''
-  var object
+  var array = []
+  var count = 0;
   request
   .post(authOptions)
-  .then((body, reject)=>{
-    var token = body.access_token;
+  .then((data, reject)=>{
+    var token = data.access_token;
     var options = {
       url: 'https://api.spotify.com/v1/users/flamekin/playlists/1KXknBsvvCqZWIzYZVh8Mh/tracks',
       headers: {'Authorization': 'Bearer ' + token},
       json: true
     };
-    request
-    .get(options)
-    .then((body, reject)=>{
-      res.send(JSON.stringify(body))
-      body.items.forEach((track)=>{
-        var string = track.track.name + ' ' + track.track.artists[0].name + ' '
-        stringBody += string;
-        //console.log(stringBody)
+    return request.get(options)
+  })
+  .then((body, reject)=>{
+    body.items.forEach((track)=>{
+      var string = track.track.name + ' ' + track.track.artists[0].name + ' '
+      stringBody += string;
+      var youtubeQuery = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q='+ string + '&type=video&key=' + youtube_api + '&max_result=1'
+
+      request(youtubeQuery, function(err, data){
+        body = JSON.parse(data.body)
+        songObject = {
+          playlistOwner : track.added_by.id,
+          playlistTitle: 'spotfiy playlist',
+          title: track.track.name,
+          artist: track.track.artists[0].name,
+          //imageArt: 'spotify image art',
+          videoUrl: body.items[0].id,
+          //body: data.body
+        }
+        count ++
+        array.push(songObject)
+        console.log(body.items[0].id)
+        if(count === body.items.length){
+          res.send(JSON.stringify(array))
+          count = 0
+        }
       })
-      console.log(stringBody)
-  }).then(console.log(stringBody))
+
+      request(youtubeQuery, function(err, data){
+        body = JSON.parse(data.body)
+        songObject = {
+          playlistOwner : track.added_by.id,
+          playlistTitle: 'spotfiy playlist',
+          title: track.track.name,
+          artist: track.track.artists[0].name,
+          //imageArt: 'spotify image art',
+          videoUrl: body.items[0].id,
+          //body: data.body
+        }
+        count ++
+        array.push(songObject)
+        console.log(body.items[0].id)
+        if(count === body.items.length){
+          res.send(JSON.stringify(array))
+          count = 0
+        }
+      })
+      
+    })
   })
 })
+
 
 app.get('/youtube', function(req, res){
   var token;

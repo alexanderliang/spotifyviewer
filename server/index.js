@@ -22,13 +22,16 @@ var app = express()
 
 app.use(cors())
 app.use(express.static('client/dist'))
-
+app.use(bodyParser())
 app.get('/', function(req, res){
 })
 
 //app.get('/login', function (req, res) {})
 
 app.get('/playlist', function(req, res){
+  console.log(req.query)
+  var spotifyUser = req.query.user
+  var spotifyPlaylistId = req.query.playlist
   var stringBody = ''
   var array = []
   var count = 0;
@@ -37,7 +40,7 @@ app.get('/playlist', function(req, res){
   .then((data, reject)=>{
     var token = data.access_token;
     var options = {
-      url: 'https://api.spotify.com/v1/users/flamekin/playlists/1KXknBsvvCqZWIzYZVh8Mh/tracks',
+      url: 'https://api.spotify.com/v1/users/'+spotifyUser+'/playlists/'+spotifyPlaylistId+'/tracks',
       headers: {'Authorization': 'Bearer ' + token},
       json: true
     };
@@ -45,17 +48,15 @@ app.get('/playlist', function(req, res){
   })
   .then((body, reject)=>{
     body.items.forEach((track)=>{
-      console.log(track)
       var string = track.track.name + ' ' + track.track.artists[0].name + ' '
       stringBody += string;
-      var youtubeQuery = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q='+ string + '&type=video&key=' + youtube_api + '&max-results=1'
+      var youtubeQuery = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q='+ string + '&type=video&key=' + youtube_api + '&max-results=1&iv_load_policy=3&fs=1'
 
       var ytoptions = {
         url: youtubeQuery,
         json: true
       };
       request(ytoptions).then((data, reject) => {
-        console.log('DATA START:', data.items[0].id)
         songObject = {
           playlistOwner : track.added_by.id,
           playlistTitle: 'spotfiy playlist',

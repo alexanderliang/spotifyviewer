@@ -28,7 +28,8 @@
   }
 
   // when video ends
-  function onPlayerStateChange(event) { 
+  function onPlayerStateChange(event) {
+  console.log(event.data)
     if(event.data === 0) {
       var index = Math.floor(Math.random(data.length)*data.length)
       console.log(index)

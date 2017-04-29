@@ -24,7 +24,6 @@ app.use(cors())
 app.use(express.static('client/dist'))
 
 app.get('/', function(req, res){
-  res.send
 })
 
 //app.get('/login', function (req, res) {})
@@ -46,49 +45,36 @@ app.get('/playlist', function(req, res){
   })
   .then((body, reject)=>{
     body.items.forEach((track)=>{
+      console.log(track)
       var string = track.track.name + ' ' + track.track.artists[0].name + ' '
       stringBody += string;
-      var youtubeQuery = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q='+ string + '&type=video&key=' + youtube_api + '&max_result=1'
+      var youtubeQuery = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q='+ string + '&type=video&key=' + youtube_api + '&max-results=1'
 
-      request(youtubeQuery, function(err, data){
-        body = JSON.parse(data.body)
+      var ytoptions = {
+        url: youtubeQuery,
+        json: true
+      };
+      request(ytoptions).then((data, reject) => {
+        console.log('DATA START:', data.items[0].id)
         songObject = {
           playlistOwner : track.added_by.id,
           playlistTitle: 'spotfiy playlist',
           title: track.track.name,
           artist: track.track.artists[0].name,
           //imageArt: 'spotify image art',
-          videoUrl: body.items[0].id,
+          videoUrl: data.items[0].id.videoId
           //body: data.body
         }
         count ++
         array.push(songObject)
-        console.log(body.items[0].id)
-        if(count === body.items.length){
+        if(count === 28){
           res.send(JSON.stringify(array))
           count = 0
         }
+      }).catch(()=>{
+        count++
       })
 
-      request(youtubeQuery, function(err, data){
-        body = JSON.parse(data.body)
-        songObject = {
-          playlistOwner : track.added_by.id,
-          playlistTitle: 'spotfiy playlist',
-          title: track.track.name,
-          artist: track.track.artists[0].name,
-          //imageArt: 'spotify image art',
-          videoUrl: body.items[0].id,
-          //body: data.body
-        }
-        count ++
-        array.push(songObject)
-        console.log(body.items[0].id)
-        if(count === body.items.length){
-          res.send(JSON.stringify(array))
-          count = 0
-        }
-      })
       
     })
   })
@@ -100,7 +86,6 @@ app.get('/youtube', function(req, res){
   request
   .post(authOptions)
   .then(function(resolve, reject){
-    //console.log(resolve)
     token = resolve;
   })
   .then(function(resolve, reject){

@@ -5,6 +5,7 @@ var bodyParser = require('body-parser')
 var cors = require('cors')
 var cookieParser = require('cookie-parser')
 var querystring = require('querystring')
+var db = require('../database')
 
 
 const client_id = 'd215473e60534fc0aa136eee0317bf33'
@@ -26,10 +27,10 @@ app.use(bodyParser())
 app.get('/', function(req, res){
 })
 
-//app.get('/login', function (req, res) {})
+app.get('/login', function (req, res) {})
 
 app.get('/playlist', function(req, res){
-  console.log(req.query)
+  console.log(req.url)
   var spotifyUser = req.query.user
   var spotifyPlaylistId = req.query.playlist
   var stringBody = ''
@@ -58,22 +59,29 @@ app.get('/playlist', function(req, res){
       };
       request(ytoptions).then((data, reject) => {
         songObject = {
-          playlistOwner : track.added_by.id,
-          playlistTitle: 'spotfiy playlist',
+          playlistOwner : spotifyUser,
+          playlistId: spotifyPlaylistId,
           title: track.track.name,
           artist: track.track.artists[0].name,
           //imageArt: 'spotify image art',
           videoUrl: data.items[0].id.videoId
           //body: data.body
         }
+
         count ++
         array.push(songObject)
+        db.insert(songObject)
         if(count === 28){
           res.send(JSON.stringify(array))
           count = 0
         }
       }).catch(()=>{
+        console.log('error')
         count++
+        if(count === 28){
+          res.send(JSON.stringify(array))
+          count = 0
+        }
       })
 
       

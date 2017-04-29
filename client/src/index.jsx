@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import List from './components/List.jsx'
 import Search from './components/Search.jsx'
+import Router from 'react-router'
 
 //import List from './components/List.jsx';
 
@@ -51,7 +52,7 @@ class App extends React.Component {
 
   render () {
     return (<div>
-      <h1>SpotifyTube</h1>
+      <h1>Spotify Viewer</h1>
       <Search 
       getVideos={this.getVideo.bind(this)}
       />
@@ -61,7 +62,8 @@ class App extends React.Component {
       width="640" 
       height="390"
       src={"http://www.youtube.com/embed/" +this.state.currentVideoID + "?enablejsapi=1&autoplay=1"}
-      frameborder="0" 
+      frameBorder="0" 
+      allowFullScreen="allowfullscreen"
       />
       <List 
       items = {this.state.items} 

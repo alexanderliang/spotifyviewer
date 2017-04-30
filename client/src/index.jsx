@@ -4,7 +4,6 @@ import $ from 'jquery';
 import List from './components/List.jsx'
 import Search from './components/Search.jsx'
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -18,7 +17,7 @@ class App extends React.Component {
 
   clickSong(songObj){
     console.log(songObj)
-    this.setState({currentVideoID: songObj.videoUrl})
+    window.player.loadVideoById(songObj.videoUrl)
   }
 
   componentDidMount() {
@@ -76,7 +75,6 @@ class App extends React.Component {
       getVideos={this.getVideo.bind(this)}
       />
       <iframe 
-      onload={window.onYouTubePlayerAPIReady()}
       id="player" 
       type="text/html" 
       width="640" 

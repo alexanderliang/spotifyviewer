@@ -14,7 +14,7 @@
 <script>
   var player;
   function onYouTubePlayerAPIReady() {
-    player = new YT.Player('player', {
+    window.player = new YT.Player('player', {
       events: {
         'onReady': onPlayerReady,
         'onStateChange': onPlayerStateChange

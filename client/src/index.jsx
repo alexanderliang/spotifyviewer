@@ -9,9 +9,12 @@ class App extends React.Component {
     super(props);
     this.state = { 
       items: [],
-      currentVideoID :'MQ-z21t8AkI',
+      currentVideoID :'',
       searchText: '',
+      currentUser: '',
+      currentPlaylist: '',
       userPlaylistId: location.href !== '/'? undefined:location.href.split('?')[1].split(':')
+    
     }
   }
 
@@ -24,8 +27,8 @@ class App extends React.Component {
     if(this.state.userPlaylistId){
       var spotifyUri ='spotify:user:' + this.state.userPlaylistId[0]+':playlist:' + this.state.userPlaylistId[1]
     }
-
-    this.getVideo(spotifyUri)
+    console.log(this.state.userPlaylistId)
+    this.getVideoDB(spotifyUri)
   }
 
   getVideoDB(playlistURI){
@@ -39,8 +42,9 @@ class App extends React.Component {
         playlist: uri[4]
       },
       success: (data) => {
-        window.data = JSON.parse(data)
-        this.setState({items:JSON.parse(data)})
+        window.data = data
+        console.log(data[0])
+        this.setState({items:data})
       },
       error: (err) => {
         console.log('err', err);
@@ -66,11 +70,19 @@ class App extends React.Component {
         console.log('err', err);
       }
     });
+
+    this.setState({
+      currentUser: data.user,
+      currentPlaylist: data.playlist
+    })
+
   }
 
   render () {
     return (<div>
       <h1>Spotify Viewer</h1>
+        <h3>Return Link</h3>
+        <div>{window.location.origin + '/?' + this.state.currentUser+ ':'+  this.state.currentPlaylist}</div>
       <Search 
       getVideos={this.getVideo.bind(this)}
       />

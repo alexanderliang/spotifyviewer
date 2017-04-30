@@ -77,8 +77,8 @@ app.get('/playlist', function(req, res){
           count = 0
         }
       })
-      .catch(()=>{
-        console.log('error')
+      .catch((err)=>{
+        console.log(err)
         count++
         if(count === 28){
           res.send(JSON.stringify(array))
@@ -91,21 +91,14 @@ app.get('/playlist', function(req, res){
   })
 })
 
-
-app.get('/youtube', function(req, res){
-  var token;
-  request
-  .post(authOptions)
-  .then(function(resolve, reject){
-    token = resolve;
-  })
-  .then(function(resolve, reject){
-    res.end(JSON.stringify(token))
+app.get('/playlistdb', function(req, res){
+  songRequest = {}
+  db.getList(songRequest, function(data){
+    res.send(data)
   })
 
-  
+
 })
-
 
 
 

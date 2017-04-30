@@ -16,17 +16,10 @@
   function onYouTubePlayerAPIReady() {
     window.player = new YT.Player('player', {
       events: {
-        'onReady': onPlayerReady,
         'onStateChange': onPlayerStateChange
       }
     });
   }
-
-  // autoplay video
-  function onPlayerReady(event) {
-    event.target.playVideo();
-  }
-
   // when video ends
   function onPlayerStateChange(event) {
   console.log(event.data)

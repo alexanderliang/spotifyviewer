@@ -35,6 +35,7 @@ app.get('/playlist', function(req, res){
   var stringBody = ''
   var array = []
   var count = 0;
+  var playlistLength;
 
   request
   .post(authOptions)
@@ -48,6 +49,7 @@ app.get('/playlist', function(req, res){
     return request.get(options)
   })
   .then((body, reject)=>{
+    playlistLength = body.items.length;
     body.items.forEach((track)=>{
       var string = track.track.name + ' ' + track.track.artists[0].name + ' '
       stringBody += string;
@@ -68,11 +70,12 @@ app.get('/playlist', function(req, res){
           videoUrl: data.items[0].id.videoId
           //body: data.body
         }
-
         count ++
         array.push(songObject)
         db.insert(songObject)
-        if(count === 28){
+        console.log(count, playlistLength)
+        if(count === playlistLength - 1){
+          console.log(JSON.stringify(array))
           res.send(JSON.stringify(array))
           count = 0
         }
@@ -80,7 +83,8 @@ app.get('/playlist', function(req, res){
       .catch((err)=>{
         console.log(err)
         count++
-        if(count === 28){
+        if(count === playlistLength - 1){
+          console.log(JSON.stringify(array))
           res.send(JSON.stringify(array))
           count = 0
         }

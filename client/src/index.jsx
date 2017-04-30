@@ -76,6 +76,7 @@ class App extends React.Component {
       getVideos={this.getVideo.bind(this)}
       />
       <iframe 
+      onload={window.onYouTubePlayerAPIReady()}
       id="player" 
       type="text/html" 
       width="640" 

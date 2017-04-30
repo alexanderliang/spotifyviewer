@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import List from './components/List.jsx'
 import Search from './components/Search.jsx'
-import Router from 'react-router'
 
-//import List from './components/List.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,6 +12,7 @@ class App extends React.Component {
       items: [],
       currentVideoID :'MQ-z21t8AkI',
       searchText: '',
+      userPlaylistId: location.href !== '/'? undefined:location.href.split('?')[1].split(':')
     }
   }
 
@@ -23,17 +22,37 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getVideo()
+    if(this.state.userPlaylistId){
+      var spotifyUri ='spotify:user:' + this.state.userPlaylistId[0]+':playlist:' + this.state.userPlaylistId[1]
+    }
+
+    this.getVideo(spotifyUri)
+  }
+
+  getVideoDB(playlistURI){
+    console.log(playlistURI)
+    var playlistURI = playlistURI || 'spotify:user:flamekin:playlist:09bNKlhOeHWeMr3ur0inkG'
+    var uri = playlistURI.split(':')
+    $.get({
+      url: 'http://localhost:3000/playlistdb', 
+      data: {
+        user: uri[2],
+        playlist: uri[4]
+      },
+      success: (data) => {
+        window.data = JSON.parse(data)
+        this.setState({items:JSON.parse(data)})
+      },
+      error: (err) => {
+        console.log('err', err);
+      }
+    });
   }
 
   getVideo(playlistURI){
     console.log(playlistURI)
     var playlistURI = playlistURI || 'spotify:user:flamekin:playlist:09bNKlhOeHWeMr3ur0inkG'
     var uri = playlistURI.split(':')
-    console.log({
-        user: uri[2],
-        playlist: uri[4]
-      })
     $.get({
       url: 'http://localhost:3000/playlist', 
       data: {

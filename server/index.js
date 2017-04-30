@@ -6,6 +6,7 @@ var cors = require('cors')
 var cookieParser = require('cookie-parser')
 var querystring = require('querystring')
 var db = require('../database')
+var path = require('path')
 
 
 const client_id = 'd215473e60534fc0aa136eee0317bf33'
@@ -22,12 +23,10 @@ var authOptions = {
 var app = express()
 
 app.use(cors())
-app.use(express.static('client/dist'))
+app.use('/',express.static('client/dist'))
 app.use(bodyParser())
 app.get('/', function(req, res){
 })
-
-app.get('/login', function (req, res) {})
 
 app.get('/playlist', function(req, res){
   console.log(req.url)
@@ -36,6 +35,7 @@ app.get('/playlist', function(req, res){
   var stringBody = ''
   var array = []
   var count = 0;
+
   request
   .post(authOptions)
   .then((data, reject)=>{
@@ -57,7 +57,8 @@ app.get('/playlist', function(req, res){
         url: youtubeQuery,
         json: true
       };
-      request(ytoptions).then((data, reject) => {
+      request(ytoptions)
+      .then((data, reject) => {
         songObject = {
           playlistOwner : spotifyUser,
           playlistId: spotifyPlaylistId,
@@ -75,7 +76,8 @@ app.get('/playlist', function(req, res){
           res.send(JSON.stringify(array))
           count = 0
         }
-      }).catch(()=>{
+      })
+      .catch(()=>{
         console.log('error')
         count++
         if(count === 28){

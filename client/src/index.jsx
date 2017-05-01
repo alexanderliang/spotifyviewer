@@ -23,20 +23,14 @@ class App extends React.Component {
       currentUser: '',
       currentPlaylist: '',
       //userPlaylistId: location.pathname !== '/'? undefined:location.href.split('?')[1].split(':'),
-      location: location.href
+      location: location.pathname
       
     }
   }
 
   //On-start
   componentDidMount() {
-    // console.log(this.state.location)
-    // if(this.state.userPlaylistId){
-    //   var spotifyUri ='spotify:user:' + this.state.userPlaylistId[0]+':playlist:' + this.state.userPlaylistId[1]
-    //   this.getVideo(spotifyUri)
-    // } else {
       this.getVideoDB() 
-    // }
     
   }
 
@@ -63,15 +57,19 @@ class App extends React.Component {
     });
   }
 
-  getVideo(playlistURI){
-    var context = this
-    var playlistURI = playlistURI || 'spotify:user:flamekin:playlist:09bNKlhOeHWeMr3ur0inkG'
-    var uri = playlistURI.split(':')
+  getVideo(playlistUriUrl){
+    if(playlistUriUrl.indexOf('spotify') === 0){
+      var spotifyUri = playlistUriUrl.split(':')
+      var spotifyUserPlaylist = [spotifyUri[2], spotifyUri[4]]
+    } else {
+      var spotifyUrl= playlistUriUrl.split('/')
+      var spotifyUserPlaylist = [spotifyUrl[4], spotifyUrl[6]]
+    }
     $.get({
       url: 'http://localhost:3000/playlist', 
       data: {
-        user: uri[2],
-        playlist: uri[4]
+        user: spotifyUserPlaylist[0],
+        playlist: spotifyUserPlaylist[1]
       },
       success: (data) => {
         window.data = JSON.parse(data)

@@ -1,11 +1,19 @@
+//React
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
-import List from './components/List.jsx'
-import Search from './components/Search.jsx'
 import {Button} from 'reactstrap'
 
+//jQuery
+import $ from 'jquery';
+
+//Components
+import List from './components/List.jsx'
+import ReturnLink from './components/ReturnLink.jsx'
+import Search from './components/Search.jsx'
+
+
 class App extends React.Component {
+  //Required
   constructor(props) {
     super(props);
     this.state = { 
@@ -19,7 +27,7 @@ class App extends React.Component {
     }
   }
 
-
+  //On-start
   componentDidMount() {
     if(this.state.userPlaylistId){
       var spotifyUri ='spotify:user:' + this.state.userPlaylistId[0]+':playlist:' + this.state.userPlaylistId[1]
@@ -28,6 +36,7 @@ class App extends React.Component {
     this.getVideoDB()
   }
 
+  //Ajax Requests
   getVideoDB(playlistURI){
     console.log(playlistURI)
     var playlistURI = playlistURI || 'spotify:user:flamekin:playlist:09bNKlhOeHWeMr3ur0inkG'
@@ -42,6 +51,7 @@ class App extends React.Component {
         window.data = data
         console.log(data[0])
         this.setState({items:data})
+        this.playNext('0')
       },
       error: (err) => {
         console.log('err', err);
@@ -66,8 +76,9 @@ class App extends React.Component {
           items: window.data,
           currentUser: window.data[0].playlistOwner,
           currentPlaylist: window.data[0].playlistId
-
         })
+        console.log('windowdata', window.data[0].videoUrl)
+        this.playNext('0')
       },
       error: (err) => {
         console.log('err', err);
@@ -76,6 +87,8 @@ class App extends React.Component {
 
   }
 
+
+  //Player Functions
   clickSong(songObj){
     console.log(songObj)
     window.player.loadVideoById(songObj.videoUrl)
@@ -107,8 +120,9 @@ class App extends React.Component {
     }
   }
 
-  playNext(){
+  playNext(videoIndex){
     var index = Math.floor(Math.random(data.length)*data.length)
+    console.log('videoIndex', index)
     player.loadVideoById(data[index].videoUrl)
   }
 
@@ -117,19 +131,14 @@ class App extends React.Component {
   }
 
   render () {
-    if(this.currentUser){
-      var returnLink = window.location.origin + '/?' + this.state.currentUser+ ':'+  this.state.currentPlaylist
-    } else {
-      var returnLink = ''
-    }
+    var hasPlaylist = !!this.currentUser
     return (
       <div>
         <h1>Spotify Viewer</h1>
-          <h3>Return Link</h3>
-          <div>{returnLink}</div>
         <Search 
         getVideos={this.getVideo.bind(this)}
         />
+        <ReturnLink player={this.state} />
         <iframe 
         id="player" 
         type="text/html" 

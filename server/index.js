@@ -101,12 +101,13 @@ app.get('/playlistdb', function(req, res){
     res.send(data)
   })
 
-
 })
 
-
-
-
+app.post('/updatelastplayed', function(req, res){
+  db.update(req.body)
+  res.status(200)
+  res.send('congrats')
+})
 
 
 app.listen(3000, function () {

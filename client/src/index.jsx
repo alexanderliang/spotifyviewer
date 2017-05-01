@@ -22,18 +22,22 @@ class App extends React.Component {
       searchText: '',
       currentUser: '',
       currentPlaylist: '',
-      userPlaylistId: location.href !== '/'? undefined:location.href.split('?')[1].split(':')
-    
+      //userPlaylistId: location.pathname !== '/'? undefined:location.href.split('?')[1].split(':'),
+      location: location.href
+      
     }
   }
 
   //On-start
   componentDidMount() {
-    if(this.state.userPlaylistId){
-      var spotifyUri ='spotify:user:' + this.state.userPlaylistId[0]+':playlist:' + this.state.userPlaylistId[1]
-    }
-    console.log(this.state.userPlaylistId)
-    this.getVideoDB()
+    // console.log(this.state.location)
+    // if(this.state.userPlaylistId){
+    //   var spotifyUri ='spotify:user:' + this.state.userPlaylistId[0]+':playlist:' + this.state.userPlaylistId[1]
+    //   this.getVideo(spotifyUri)
+    // } else {
+      this.getVideoDB() 
+    // }
+    
   }
 
   //Ajax Requests
@@ -84,14 +88,26 @@ class App extends React.Component {
         console.log('err', err);
       }
     });
-
   }
 
-
+  updateLastPlayed(songObj){
+    console.log(true)
+    $.post({
+      url: 'http://localhost:3000/updatelastplayed', 
+      data: songObj,
+      success: (data) => {
+        console.log('Updated Last Played')
+      },
+      error: (err) => {
+        console.log('err', err);
+      }
+    });
+  }
   //Player Functions
   clickSong(songObj){
     console.log(songObj)
     window.player.loadVideoById(songObj.videoUrl)
+    this.updateLastPlayed(songObj);
   }
 
   playPauseVideo(){

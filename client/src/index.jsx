@@ -1,7 +1,7 @@
 //React
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Button} from 'reactstrap'
+import {Button, ButtonGroup} from 'react-bootstrap'
 
 //jQuery
 import $ from 'jquery';
@@ -23,28 +23,28 @@ class App extends React.Component {
       currentUser: '',
       currentPlaylist: '',
       //userPlaylistId: location.pathname !== '/'? undefined:location.href.split('?')[1].split(':'),
-      location: location.pathname
+      location: location.href
       
     }
   }
 
   //On-start
   componentDidMount() {
+    this.state.location = this.state.location.split('?')[1]
+    console.log(this.state.location, 'location')
+    if(!this.state.location){
       this.getVideoDB() 
-    
+    } else {
+      var linkQ = this.state.location.split(':')
+      console.log('linkQ': linkQ)
+      this.getVideo([linkQ[0], linkQ[1]])
+    }
   }
-
   //Ajax Requests
-  getVideoDB(playlistURI){
-    console.log(playlistURI)
-    var playlistURI = playlistURI || 'spotify:user:flamekin:playlist:09bNKlhOeHWeMr3ur0inkG'
-    var uri = playlistURI.split(':')
+  getVideoDB(){
     $.get({
       url: 'http://localhost:3000/playlistdb', 
-      data: {
-        user: uri[2],
-        playlist: uri[4]
-      },
+      data: {},
       success: (data) => {
         window.data = data
         console.log(data[0])
@@ -61,10 +61,13 @@ class App extends React.Component {
     if(playlistUriUrl.indexOf('spotify') === 0){
       var spotifyUri = playlistUriUrl.split(':')
       var spotifyUserPlaylist = [spotifyUri[2], spotifyUri[4]]
-    } else {
+    } else if(playlistUriUrl.indexOf('https://') === 0){
       var spotifyUrl= playlistUriUrl.split('/')
       var spotifyUserPlaylist = [spotifyUrl[4], spotifyUrl[6]]
+    } else {
+      var spotifyUserPlaylist=[playlistUriUrl[0], playlistUriUrl[1]]
     }
+
     $.get({
       url: 'http://localhost:3000/playlist', 
       data: {
@@ -163,12 +166,11 @@ class App extends React.Component {
         allowFullScreen="allowfullscreen"
         />
         <div>
-          <Button outline color="primary">Previous</Button>
-          <Button outline color="success" onClick={this.playPauseVideo}>Play/Pause</Button>
-          <Button outline color="warning" onClick={this.playNext}>Next</Button>
-          <Button outline color="danger" onClick={this.stopVideo}>Stop</Button>
-          <Button outline color="info" onclick={this.toggleMute}>Shuffle</Button>
-          <Button outline color="link" onclick={this.toggleMute}>Mute</Button>
+          <ButtonGroup>
+            <Button  onClick={this.playPauseVideo}>Play/Pause</Button>{' '}
+            <Button  bsStyle="success" onClick={this.playNext}>Next</Button>{' '}
+            <Button  bsStyle="danger" onClick={this.stopVideo}>Stop</Button>{' '}
+          </ButtonGroup>
         </div>
         <List 
         items = {this.state.items} 
@@ -179,3 +181,9 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
+
+
+// //
+//           <Button outline color="primary">Previous</Button>{' '}
+//           <Button outline color="info" onclick={this.toggleMute}>Shuffle</Button>{' '}
+//           <Button outline color="link" onclick={this.toggleMute}>Mute</Button>{' '}

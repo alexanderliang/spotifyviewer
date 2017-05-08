@@ -25,8 +25,6 @@ var app = express()
 app.use(cors())
 app.use('/',express.static('client/dist'))
 app.use(bodyParser())
-app.get('/', function(req, res){
-})
 
 app.get('/playlist', function(req, res){
   console.log(req.url)

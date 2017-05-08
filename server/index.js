@@ -51,7 +51,7 @@ app.get('/playlist', function(req, res){
   .then((body, reject)=>{
     playlistLength = body.items.length;
     body.items.forEach((track)=>{
-      var string = track.track.name + ' ' + track.track.artists[0].name + ' '
+      var string = track.track.name + ' ' + track.track.artists[0].name + ' video'
       stringBody += string;
       var youtubeQuery = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q='+ string + '&type=video&key=' + youtube_api + '&max-results=1&iv_load_policy=3&fs=1'
 

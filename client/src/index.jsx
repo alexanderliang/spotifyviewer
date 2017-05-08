@@ -33,11 +33,11 @@ class App extends React.Component {
     this.state.location = this.state.location.split('?')[1]
     console.log(this.state.location, 'location')
     if(!this.state.location){
-      this.getVideoDB() 
+      this.getVideoDB().then(function(){window.player.loadVideoById(data[0].videoUrl)})
     } else {
       var linkQ = this.state.location.split(':')
       console.log('linkQ': linkQ)
-      this.getVideo([linkQ[0], linkQ[1]])
+      this.getVideo([linkQ[0], linkQ[1]]).then(function(){window.player.loadVideoById(data[0].videoUrl)})
     }
   }
   //Ajax Requests

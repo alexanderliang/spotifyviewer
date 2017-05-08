@@ -33,12 +33,13 @@ class App extends React.Component {
     this.state.location = this.state.location.split('?')[1]
     console.log(this.state.location, 'location')
     if(!this.state.location){
-      this.getVideoDB().then(function(){window.player.loadVideoById(data[0].videoUrl)})
+      this.getVideoDB() 
     } else {
       var linkQ = this.state.location.split(':')
       console.log('linkQ': linkQ)
-      this.getVideo([linkQ[0], linkQ[1]]).then(function(){window.player.loadVideoById(data[0].videoUrl)})
+      this.getVideo([linkQ[0], linkQ[1]])
     }
+    window.onYouTubePlayerAPIReady()
   }
   //Ajax Requests
   getVideoDB(){

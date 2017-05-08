@@ -5,7 +5,6 @@
   <title>Spotify Viewer</title>
   <script src="http://www.youtube.com/player_api"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container" id="app"></div>
@@ -13,7 +12,6 @@
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
-<script src="http://www.youtube.com/player_api"></script>
 <script>
   var player;
   window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
@@ -24,7 +22,7 @@
     });
   }
 
-  window.onYouTubePlayerAPIReady()
+  //window.onYouTubePlayerAPIReady()
   // when video ends
   function onPlayerStateChange(event) {
   console.log(event.data)
@@ -34,7 +32,7 @@
       player.loadVideoById(data[index].videoUrl)
     }
   }
-  setTimeout(function(){window.player.loadVideoById(data[0].videoUrl)}, 1000)
+  //setTimeout(function(){window.player.loadVideoById(data[0].videoUrl)}, 1000)
 </script>
 
 

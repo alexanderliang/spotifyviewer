@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/spotifyviewer');
+mongoose.connect('mongodb://alack:dwiz@ds133241.mlab.com:33241/astrosalamanders/spotifyviewer');
 
 var db = mongoose.connection;
 

@@ -16,13 +16,15 @@
 <script src="http://www.youtube.com/player_api"></script>
 <script>
   var player;
-  function onYouTubePlayerAPIReady() {
+  window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
     window.player = new YT.Player('player', {
       events: {
         'onStateChange': onPlayerStateChange
       }
     });
   }
+
+  window.onYouTubePlayerAPIReady()
   // when video ends
   function onPlayerStateChange(event) {
   console.log(event.data)
@@ -32,7 +34,7 @@
       player.loadVideoById(data[index].videoUrl)
     }
   }
-  setTimeout(function(){window.player.loadVideoById(data[0].videoUrl)}, 5000)
+  setTimeout(function(){window.player.loadVideoById(data[0].videoUrl)}, 1000)
 </script>
 
 

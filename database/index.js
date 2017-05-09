@@ -46,6 +46,10 @@ Song.getList = function(reqObject, callback){
   //.where('playlistOwner').exists(reqOwner)
   //.where("playlistId").exists(reqPlaylist)
   .then(function(resolve, reject){
+    resolve.forEach((item)=>{
+      delete item.playlistOwner;
+      delete item.playlistId;
+    })
     callback(resolve)
   })
 }

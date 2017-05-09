@@ -11,6 +11,7 @@ import List from './components/List.jsx'
 import ReturnLink from './components/ReturnLink.jsx'
 import Search from './components/Search.jsx'
 
+var port = process.env.PORT || 3000;
 
 class App extends React.Component {
   //Required
@@ -39,12 +40,11 @@ class App extends React.Component {
       console.log('linkQ': linkQ)
       this.getVideo([linkQ[0], linkQ[1]])
     }
-    window.onYouTubePlayerAPIReady()
   }
   //Ajax Requests
   getVideoDB(){
     $.get({
-      url: 'http://localhost:3000/playlistdb', 
+      url: 'http://localhost:' + port + '/playlistdb', 
       data: {},
       success: (data) => {
         window.data = data
@@ -70,7 +70,7 @@ class App extends React.Component {
     }
 
     $.get({
-      url: 'http://localhost:3000/playlist', 
+      url: 'http://localhost:' + port + '/playlist', 
       data: {
         user: spotifyUserPlaylist[0],
         playlist: spotifyUserPlaylist[1]
@@ -95,7 +95,7 @@ class App extends React.Component {
   updateLastPlayed(songObj){
     console.log(true)
     $.post({
-      url: 'http://localhost:3000/updatelastplayed', 
+      url: 'http://localhost:' + port + '/updatelastplayed', 
       data: songObj,
       success: (data) => {
         console.log('Updated Last Played')
@@ -123,7 +123,8 @@ class App extends React.Component {
 
   }
 
-  toggleShuffle(){
+  handleKeyPress(e){console.log(e)}
+  dropBomb(){
 
   }
 
@@ -151,7 +152,7 @@ class App extends React.Component {
   render () {
     var hasPlaylist = !!this.currentUser
     return (
-      <div>
+      <div onKeyDown={console.log('hello')} >
         <h1>Spotify Viewer</h1>
         <Search 
         getVideos={this.getVideo.bind(this)}

@@ -7,36 +7,34 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container" id="app"></div>
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-<script>
-  var player;
-  window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
-    window.player = new YT.Player('player', {
-      events: {
-        'onStateChange': onPlayerStateChange
-      }
-    });
-  }
-
-  //window.onYouTubePlayerAPIReady()
-  // when video ends
-  function onPlayerStateChange(event) {
-  console.log(event.data)
-    if(event.data === 0) {
-      var index = Math.floor(Math.random(data.length)*data.length)
-      console.log(index)
-      player.loadVideoById(data[index].videoUrl)
+  <div class="container" id="app"></div>
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+  <script>
+    var player;
+    window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
+      window.player = new YT.Player('player', {
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
     }
-  }
-  //setTimeout(function(){window.player.loadVideoById(data[0].videoUrl)}, 1000)
-</script>
 
-
-<script type="text/javascript" src="bundle.js"></script>
+    //window.onYouTubePlayerAPIReady()
+    // when video ends
+    function onPlayerStateChange(event) {
+    console.log(event.data)
+      if(event.data === 0) {
+        var index = Math.floor(Math.random(data.length)*data.length)
+        console.log(index)
+        player.loadVideoById(data[index].videoUrl)
+      }
+    }
+    //setTimeout(function(){window.player.loadVideoById(data[0].videoUrl)}, 1000)
+  </script>
+  <script type="text/javascript" src="bundle.js"></script>
 </body>
 </html>
 

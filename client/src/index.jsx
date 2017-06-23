@@ -40,25 +40,30 @@ class App extends React.Component {
       console.log('linkQ': linkQ)
       this.getVideo([linkQ[0], linkQ[1]])
     }
-    var player;
-    window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
-      window.player = new YT.Player('player', {
-        events: {
-          'onStateChange': onPlayerStateChange
-        }
-      });
-    }
-
-    //window.onYouTubePlayerAPIReady()
-    // when video ends
-    function onPlayerStateChange(event) {
-    console.log(event.data)
-      if(event.data === 0) {
-        var index = Math.floor(Math.random(data.length)*data.length)
-        console.log(index)
-        player.loadVideoById(data[index].videoUrl)
+    function youtubeOnLoad(){
+      var player;
+      window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
+        window.player = new YT.Player('player', {
+          events: {
+            'onStateChange': onPlayerStateChange
+          }
+        });
       }
+
+      //window.onYouTubePlayerAPIReady()
+      // when video ends
+      function onPlayerStateChange(event) {
+      console.log(event.data)
+        if(event.data === 0) {
+          var index = Math.floor(Math.random(data.length)*data.length)
+          console.log(index)
+          player.loadVideoById(data[index].videoUrl)
+        }
+      }
+
     }
+    setTimeout(youtubeOnLoad, 1000)
+
   }
   
   //Ajax Requests

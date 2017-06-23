@@ -44,7 +44,7 @@ class App extends React.Component {
   //Ajax Requests
   getVideoDB(){
     $.get({
-      url: 'http://localhost:' + port + '/playlistdb', 
+      url: '/playlistdb', 
       data: {},
       success: (data) => {
         window.data = data
@@ -70,7 +70,7 @@ class App extends React.Component {
     }
 
     $.get({
-      url: 'http://localhost:' + port + '/playlist', 
+      url: '/playlist', 
       data: {
         user: spotifyUserPlaylist[0],
         playlist: spotifyUserPlaylist[1]
@@ -95,7 +95,7 @@ class App extends React.Component {
   updateLastPlayed(songObj){
     console.log(true)
     $.post({
-      url: 'http://localhost:' + port + '/updatelastplayed', 
+      url: '/updatelastplayed', 
       data: songObj,
       success: (data) => {
         console.log('Updated Last Played')

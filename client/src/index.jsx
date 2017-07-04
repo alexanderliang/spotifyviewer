@@ -24,10 +24,12 @@ class App extends React.Component {
       searchText: '',
       currentUser: '',
       currentPlaylist: '',
-      location: location.href 
+      location: location.href
     }
     this.playNext = this.playNext.bind(this);
     this.stopVideo = this.stopVideo.bind(this);
+    this.onReady = this.onReady.bind(this);
+    this.playPauseVideo = this.playPauseVideo.bind(this);
   }
 
   //On-start
@@ -49,7 +51,7 @@ class App extends React.Component {
       url: '/playlistdb', 
       success: (data) => {
         this.setState({items:data})
-        this.playNext('0')
+        this.setState({currentVideoID:data[0].videoUrl})
       },
       error: (err) => {
         console.log('err', err);
@@ -82,8 +84,7 @@ class App extends React.Component {
           currentUser: data[0].playlistOwner,
           currentPlaylist: data[0].playlistId
         })
-        console.log('windowdata', data[0].videoUrl)
-        this.playNext('0')
+        this.setState({currentVideoID:data[0].videoUrl})
       },
       error: (err) => {
         console.log('err', err);
@@ -112,10 +113,14 @@ class App extends React.Component {
   }
 
   playPauseVideo(){
-    // var playing = window.player.getPlayerState()
-    // if(playing === 2 || playing === 5){window.player.playVideo()}
-    // else if(playing === 1){window.player.pauseVideo()}
-    // else if(playing === 0){this.playNext()}
+    var playerState = this.state.player.getPlayerState();
+    if(playerState === 2 || playerState === 5){
+      this.state.player.playVideo();
+    } else if(playerState === 1){
+      this.state.player.pauseVideo();
+    } else if(playerState === 0){
+      this.playNext();
+    }
   }
 
   handleKeyPress(e){console.log(e)}
@@ -139,7 +144,13 @@ class App extends React.Component {
   }
 
   stopVideo(){
-    this.setState({currentVideoID:null})
+    this.state.player.stopVideo();
+  }
+  
+  onReady(event){
+    this.setState({
+      player : event.target
+    })
   }
 
   render () {
@@ -166,6 +177,7 @@ class App extends React.Component {
         id="player"
         videoId={this.state.currentVideoID}
         onEnd={this.playNext}
+        onReady={this.onReady}
         />
         <div>
           <ButtonGroup>

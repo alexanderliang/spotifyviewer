@@ -73,18 +73,21 @@ app.get('/playlist', function(req, res){
         db.insert(songObject)
         console.log(count, playlistLength)
         if(count === playlistLength - 1){
-          console.log(JSON.stringify(array))
-          res.send(JSON.stringify(array))
-          count = 0
+          setTimeout(()=>{
+            res.send(JSON.stringify(array))
+            count = 0
+          }, 250)
         }
       })
       .catch((err)=>{
         console.log(err)
         count++
-        if(count === playlistLength - 1){
-          console.log(JSON.stringify(array))
-          res.send(JSON.stringify(array))
-          count = 0
+        if(count === 5){
+          setTimeout(()=>{
+            res.send(JSON.stringify(array))
+            count = 0
+          }, 500)
+          
         }
       })
 

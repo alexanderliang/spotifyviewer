@@ -27,6 +27,7 @@ class App extends React.Component {
       location: location.href 
     }
     this.playNext = this.playNext.bind(this);
+    this.stopVideo = this.stopVideo.bind(this);
   }
 
   //On-start
@@ -106,7 +107,6 @@ class App extends React.Component {
 
   //Player Functions
   clickSong(songObj){
-    console.log(songObj)
     this.setState({currentVideoID: songObj.videoUrl})
     this.updateLastPlayed(songObj);
   }
@@ -116,10 +116,6 @@ class App extends React.Component {
     // if(playing === 2 || playing === 5){window.player.playVideo()}
     // else if(playing === 1){window.player.pauseVideo()}
     // else if(playing === 0){this.playNext()}
-  }
-
-  previous(){
-
   }
 
   handleKeyPress(e){console.log(e)}
@@ -136,13 +132,14 @@ class App extends React.Component {
   }
 
   playNext(videoIndex){
-    var index = videoIndex || Math.floor(Math.random(this.state.items.length)*this.state.items.length)
+    var index = Math.floor(Math.random(this.state.items.length)*this.state.items.length)
     console.log('videoIndex', index)
+    console.log(this.state.items)
     this.setState({currentVideoID: this.state.items[index].videoUrl})
   }
 
   stopVideo(){
-    window.player.stopVideo()
+    this.setState({currentVideoID:null})
   }
 
   render () {
@@ -186,6 +183,10 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
+
+  // previous(){
+
+  // }
 
 
 // //

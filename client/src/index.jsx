@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Button, ButtonGroup} from 'react-bootstrap'
+import Player from 'react-youtube';
 
 //jQuery
 import $ from 'jquery';
@@ -23,10 +24,9 @@ class App extends React.Component {
       searchText: '',
       currentUser: '',
       currentPlaylist: '',
-      //userPlaylistId: location.pathname !== '/'? undefined:location.href.split('?')[1].split(':'),
-      location: location.href
-      
+      location: location.href 
     }
+    this.playNext = this.playNext.bind(this);
   }
 
   //On-start
@@ -40,30 +40,6 @@ class App extends React.Component {
       console.log('linkQ': linkQ)
       this.getVideo([linkQ[0], linkQ[1]])
     }
-    function youtubeOnLoad(){
-      var player;
-      window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
-        window.player = new YT.Player('player', {
-          events: {
-            'onStateChange': onPlayerStateChange
-          }
-        });
-      }
-
-      //window.onYouTubePlayerAPIReady()
-      // when video ends
-      function onPlayerStateChange(event) {
-      console.log(event.data)
-        if(event.data === 0) {
-          var index = Math.floor(Math.random(data.length)*data.length)
-          console.log(index)
-          player.loadVideoById(data[index].videoUrl)
-        }
-      }
-
-    }
-    setTimeout(youtubeOnLoad, 1000)
-
   }
   
   //Ajax Requests
@@ -130,10 +106,11 @@ class App extends React.Component {
       }
     });
   }
+
   //Player Functions
   clickSong(songObj){
     console.log(songObj)
-    window.player.loadVideoById(songObj.videoUrl)
+    this.setState({currentVideoID: songObj.videoUrl})
     this.updateLastPlayed(songObj);
   }
 
@@ -167,7 +144,7 @@ class App extends React.Component {
   playNext(videoIndex){
     var index = Math.floor(Math.random(data.length)*data.length)
     console.log('videoIndex', index)
-    player.loadVideoById(data[index].videoUrl)
+    this.setState({currentVideoID: data[index].videoUrl})
   }
 
   stopVideo(){
@@ -176,6 +153,16 @@ class App extends React.Component {
 
   render () {
     var hasPlaylist = !!this.currentUser
+    var opts = {
+      height:'390',
+      width:'640',
+      playerVars:{
+        autoplay: 1,
+        enablejsapi: 1,
+        fs: 1,
+        iv_load_policy: 3
+      }
+    }
     return (
       <div onKeyDown={console.log('hello')} >
         <h1>Spotify Viewer</h1>
@@ -183,14 +170,11 @@ class App extends React.Component {
         getVideos={this.getVideo.bind(this)}
         />
         <ReturnLink player={this.state} />
-        <iframe 
-        id="player" 
-        type="text/html" 
-        width="640" 
-        height="390"
-        src={"http://www.youtube.com/embed/" +this.state.currentVideoID + "?enablejsapi=1&autoplay=1"}
-        frameBorder="0" 
-        allowFullScreen="allowfullscreen"
+        <Player 
+        opts = {opts}
+        id="player"
+        videoId={this.state.currentVideoID}
+        onEnd={this.playNext}
         />
         <div>
           <ButtonGroup>

@@ -10,6 +10,7 @@
     "db-dev": "mongod -dbpath db/"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",

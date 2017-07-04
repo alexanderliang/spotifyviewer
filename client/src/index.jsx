@@ -46,10 +46,7 @@ class App extends React.Component {
   getVideoDB(){
     $.get({
       url: '/playlistdb', 
-      data: {},
       success: (data) => {
-        window.data = data
-        console.log(data[0])
         this.setState({items:data})
         this.playNext('0')
       },
@@ -77,14 +74,14 @@ class App extends React.Component {
         playlist: spotifyUserPlaylist[1]
       },
       success: (data) => {
-        window.data = JSON.parse(data)
-        console.log(typeof window.data, window.data)
+        var data = JSON.parse(data)
+        console.log(typeof data, data)
         this.setState({
-          items: window.data,
-          currentUser: window.data[0].playlistOwner,
-          currentPlaylist: window.data[0].playlistId
+          items: data,
+          currentUser: data[0].playlistOwner,
+          currentPlaylist: data[0].playlistId
         })
-        console.log('windowdata', window.data[0].videoUrl)
+        console.log('windowdata', data[0].videoUrl)
         this.playNext('0')
       },
       error: (err) => {
@@ -115,10 +112,10 @@ class App extends React.Component {
   }
 
   playPauseVideo(){
-    var playing = window.player.getPlayerState()
-    if(playing === 2 || playing === 5){window.player.playVideo()}
-    else if(playing === 1){window.player.pauseVideo()}
-    else if(playing === 0){this.playNext()}
+    // var playing = window.player.getPlayerState()
+    // if(playing === 2 || playing === 5){window.player.playVideo()}
+    // else if(playing === 1){window.player.pauseVideo()}
+    // else if(playing === 0){this.playNext()}
   }
 
   previous(){
@@ -126,9 +123,6 @@ class App extends React.Component {
   }
 
   handleKeyPress(e){console.log(e)}
-  dropBomb(){
-
-  }
 
   toggleMute(){
     console.log(true)
@@ -142,9 +136,9 @@ class App extends React.Component {
   }
 
   playNext(videoIndex){
-    var index = Math.floor(Math.random(data.length)*data.length)
+    var index = videoIndex || Math.floor(Math.random(this.state.items.length)*this.state.items.length)
     console.log('videoIndex', index)
-    this.setState({currentVideoID: data[index].videoUrl})
+    this.setState({currentVideoID: this.state.items[index].videoUrl})
   }
 
   stopVideo(){

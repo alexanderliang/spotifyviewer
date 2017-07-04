@@ -2,7 +2,7 @@ import React from 'react';
 
 const ListItem = (props) => (
   <div onClick = {function(){props.clickSong(props.songObj)}}>
-    {props.artist + ' - ' + props.songname}
+    {props.listNumber + '. ' + props.artist + ' - ' + props.songname}
   </div>
 )
 

@@ -7,11 +7,11 @@ var cookieParser = require('cookie-parser')
 var querystring = require('querystring')
 var db = require('../database')
 var path = require('path')
+var keys = require('../keys.js')
 
-
-const client_id = 'd215473e60534fc0aa136eee0317bf33'
-const client_secret = 'cf375c132e234194b100de60bbb01c39'
-const youtube_api = 'AIzaSyD3gTN8crYzbM5CLzAkBNN_9bceOxWaG34'
+const client_id = keys.spotifyClientId
+const client_secret = keys.spotifySecret
+const youtube_api = keys.googleApiKey
 
 var authOptions = {
   url: 'https://accounts.spotify.com/api/token',

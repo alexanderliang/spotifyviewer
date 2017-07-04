@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var mongoAddress = require('../keys.js').mlab
 mongoose.connect('mongodb://alack:dwiz@ds133241.mlab.com:33241/astrosalamanders/spotifyviewer');
 
 var db = mongoose.connection;
